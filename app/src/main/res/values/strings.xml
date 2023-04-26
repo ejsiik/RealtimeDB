@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">RealtimeDB</string>
+
+    <string-array name="spinner">
+        <item>All</item>
+        <item>Read</item>
+        <item>Unread</item>
+    </string-array>
+</resources>

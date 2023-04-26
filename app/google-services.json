@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "890334756499",
+    "firebase_url": "https://awesome-9342f-default-rtdb.firebaseio.com",
+    "project_id": "awesome-9342f",
+    "storage_bucket": "awesome-9342f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890334756499:android:181d754b91243a60a1d766",
+        "android_client_info": {
+          "package_name": "com.example.realtimedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890334756499-hb8g9s5qmklin8528gtfuhkkgsmm9107.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5QzcvgOC50u1eoPTAZ6yZmjG-sOKLTbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "890334756499-hb8g9s5qmklin8528gtfuhkkgsmm9107.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
