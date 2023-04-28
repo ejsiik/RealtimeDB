@@ -6,16 +6,20 @@ import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class RecordsAdapter(private val recordsList: MutableList<Book>) :
     RecyclerView.Adapter<RecordsAdapter.ViewHolder>() {
 
     private var onReadSwitchClickListener: ((book: Book, isChecked: Boolean) -> Unit)? = null
+    private lateinit var database: DatabaseReference
 
     fun setOnReadSwitchClickListener(listener: (book: Book, isChecked: Boolean) -> Unit) {
         onReadSwitchClickListener = listener
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        database = FirebaseDatabase.getInstance().getReference("books")
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.record_layout, parent, false)
         return ViewHolder(view)
@@ -26,10 +30,13 @@ class RecordsAdapter(private val recordsList: MutableList<Book>) :
         holder.titleTextView.text = book.title
         holder.authorTextView.text = book.author
         holder.readSwitch.isChecked = book.read
-        holder.readSwitch.setOnCheckedChangeListener { _, isChecked ->
+        holder.readSwitch.setOnClickListener {
+            val isChecked = holder.readSwitch.isChecked
             onReadSwitchClickListener?.invoke(book, isChecked)
+            database.child(book.title!!).child("read").setValue(isChecked)
         }
     }
+
 
     override fun getItemCount(): Int {
         return recordsList.size
