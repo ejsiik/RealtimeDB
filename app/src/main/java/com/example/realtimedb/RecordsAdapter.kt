@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class RecordsAdapter(private val recordsList: MutableList<Book>) :
+class RecordsAdapter(private var recordsList: MutableList<Book>) :
     RecyclerView.Adapter<RecordsAdapter.ViewHolder>() {
 
     private var onReadSwitchClickListener: ((book: Book, isChecked: Boolean) -> Unit)? = null
@@ -48,10 +48,16 @@ class RecordsAdapter(private val recordsList: MutableList<Book>) :
         val readSwitch: Switch = view.findViewById(R.id.read)
     }
 
-    fun updateList(newList: List<Book>) {
+    fun updateData(newBooks: List<Book>) {
+        // create a copy of the original list
+        val originalList = mutableListOf<Book>()
+        originalList.addAll(recordsList)
+
+        // update the list view with the filtered list
         recordsList.clear()
-        recordsList.addAll(newList)
+        recordsList.addAll(newBooks)
         notifyDataSetChanged()
+
     }
 
 }

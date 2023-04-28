@@ -1,15 +1,19 @@
 package com.example.realtimedb
 
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private var spinnerFilter: String = "All"
     private lateinit var spinnerSettings: Spinner
+    private lateinit var searchImageView: ImageView
+    private lateinit var searchEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         addRecordButton = findViewById(R.id.add_record_button)
         logOutButton = findViewById(R.id.logout_button)
         spinnerSettings = findViewById(R.id.spinner_settings)
+        searchImageView = findViewById(R.id.search_image_view)
+        searchEditText = findViewById(R.id.searchEditText)
 
         recordsList = mutableListOf()
 
@@ -60,7 +68,8 @@ class MainActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("MainActivity", "Error reading from database", error.toException())
-                Toast.makeText(this@MainActivity, "Error reading from database", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "Error reading from database", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
         database.addValueEventListener(listener)
@@ -89,6 +98,31 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+        searchImageView.setOnClickListener {
+            val title = searchEditText.text.toString()
+            val query = database.orderByChild("title").equalTo(title)
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Iterate through the books and update the RecyclerView
+                        val books = mutableListOf<Book>()
+                        for (bookSnapshot in dataSnapshot.children) {
+                            val book = bookSnapshot.getValue(Book::class.java)
+                            book?.let { books.add(it) }
+                        }
+                        recordsAdapter.updateData(books)
+                    } else {
+                        // Display a toast message indicating no books were found
+                        Toast.makeText(applicationContext, "No books found with the given title", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, "onCancelled", databaseError.toException())
+                }
+            })
         }
     }
 
