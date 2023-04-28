@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recordsAdapter: RecordsAdapter
     private lateinit var database: DatabaseReference
     private var spinnerFilter: String = "All"
-    val spinnerSettings = findViewById<Spinner>(R.id.spinner_settings)
+    private lateinit var spinnerSettings: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         authorEditText = findViewById(R.id.author_edit_text)
         addRecordButton = findViewById(R.id.add_record_button)
         logOutButton = findViewById(R.id.logout_button)
+        spinnerSettings = findViewById(R.id.spinner_settings)
 
         recordsList = mutableListOf()
 
